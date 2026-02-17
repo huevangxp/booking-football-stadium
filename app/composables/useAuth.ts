@@ -1,5 +1,5 @@
 export const useAuth = () => {
-    const user = useState<{ username: string } | null>("user", () => null);
+    const user = useCookie<{ username: string } | null>("user", { default: () => null });
 
     const login = (username: string) => {
         user.value = { username };

@@ -6,4 +6,13 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+  // runtimeConfig: {
+  //   public: {
+  //     apiBase: process.env.API_BASE || "http://localhost:3000",
+  //   },
+  // },
+  devServer: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
 });

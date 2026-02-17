@@ -207,7 +207,7 @@ const handleLogin = () => {
     navigateTo("/admin/dashboard");
   } else if (loginForm.value.username === "customer") {
     login("customer");
-    navigateTo("/customer");
+    navigateTo("/");
   } else {
     alert('Please enter "admin" or "customer" to test the roles.');
   }

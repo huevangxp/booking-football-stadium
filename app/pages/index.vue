@@ -92,6 +92,131 @@
       </div>
     </section>
 
+    <!-- Upcoming Activity (Customer Only) -->
+    <section
+      v-if="isAuthenticated"
+      class="space-y-8 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200"
+    >
+      <div class="flex items-end justify-between border-b pb-4 mb-8">
+        <div>
+          <h2
+            class="text-3xl font-black text-slate-900 tracking-tighter uppercase"
+          >
+            Your Schedule
+          </h2>
+          <p
+            class="text-sm font-bold text-slate-400 uppercase tracking-widest mt-1"
+          >
+            Don't miss your upcoming games
+          </p>
+        </div>
+        <NuxtLink
+          to="/customer/my-bookings"
+          class="text-primary font-black uppercase tracking-widest text-xs hover:underline underline-offset-4"
+          >View All</NuxtLink
+        >
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Upcoming Match Card -->
+        <div
+          class="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl hover:border-primary transition-all group relative overflow-hidden"
+        >
+          <div class="absolute top-0 right-0 p-4">
+            <span
+              class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-widest rounded-full"
+              >Confirmed</span
+            >
+          </div>
+          <p
+            class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4"
+          >
+            Tomorrow, 19:00
+          </p>
+          <h3
+            class="text-2xl font-black text-slate-900 leading-tight mb-2 group-hover:text-primary transition-colors"
+          >
+            Friendly Match
+          </h3>
+          <p class="text-sm font-bold text-slate-500 flex items-center gap-2">
+            <span class="text-lg">🏟️</span> Court 1 (5-a-side)
+          </p>
+          <div
+            class="mt-6 pt-6 border-t border-slate-100 flex items-center justify-between"
+          >
+            <div class="flex -space-x-2">
+              <div
+                class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-[10px]"
+              >
+                👤
+              </div>
+              <div
+                class="w-8 h-8 rounded-full bg-slate-300 border-2 border-white flex items-center justify-center text-[10px]"
+              >
+                +3
+              </div>
+            </div>
+            <button
+              class="text-primary font-black uppercase tracking-widest text-[10px] hover:text-primary-dark"
+            >
+              Manage
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty State / Promo -->
+        <div
+          class="bg-slate-50 border border-slate-200 border-dashed rounded-3xl p-6 flex flex-col items-center justify-center text-center hover:bg-white hover:shadow-lg transition-all group"
+        >
+          <div
+            class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl shadow-sm mb-4 group-hover:scale-110 transition-transform"
+          >
+            📅
+          </div>
+          <h3
+            class="text-lg font-black text-slate-900 uppercase tracking-tight mb-2"
+          >
+            Plan Ahead
+          </h3>
+          <p class="text-xs font-bold text-slate-400 max-w-[200px] mb-6">
+            Secure your favorite slot for next week.
+          </p>
+          <NuxtLink
+            to="/booking"
+            class="px-6 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest hover:border-primary hover:text-primary transition-all shadow-sm"
+            >Book Slot</NuxtLink
+          >
+        </div>
+
+        <!-- Quick Stats -->
+        <div
+          class="bg-primary text-white rounded-3xl p-8 relative overflow-hidden group"
+        >
+          <div
+            class="absolute -right-12 -top-12 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"
+          ></div>
+
+          <h3 class="text-4xl font-black mb-1">12</h3>
+          <p
+            class="text-[10px] uppercase tracking-[0.2em] font-bold opacity-70 mb-8"
+          >
+            Matches Played
+          </p>
+
+          <h3 class="text-xl font-black mb-1">MVP</h3>
+          <p
+            class="text-[10px] uppercase tracking-[0.2em] font-bold opacity-70"
+          >
+            Player Rank
+          </p>
+
+          <div class="absolute bottom-6 right-6 opacity-20 text-6xl rotate-12">
+            🏆
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Product Showcase / Featured Venues -->
     <section
       class="space-y-10 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200"

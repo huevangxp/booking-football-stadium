@@ -28,20 +28,93 @@
           </div>
         </NuxtLink>
 
-        <!-- Auth Actions -->
+        <!-- Desktop Menu (Authenticated) -->
+        <div v-if="isAuthenticated" class="hidden md:flex items-center gap-1">
+          <NuxtLink
+            to="/"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-widest transition-all hover:bg-slate-50 hover:text-primary"
+            active-class="bg-primary/5 text-primary font-black"
+          >
+            <span class="text-lg">🏠</span>
+            <span>Home</span>
+          </NuxtLink>
+          <NuxtLink
+            to="/booking"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-widest transition-all hover:bg-slate-50 hover:text-primary"
+            active-class="bg-primary/5 text-primary font-black"
+          >
+            <span class="text-lg">⚡</span>
+            <span>Book Now</span>
+          </NuxtLink>
+          <NuxtLink
+            to="/customer/my-bookings"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-widest transition-all hover:bg-slate-50 hover:text-primary"
+            active-class="bg-primary/5 text-primary font-black"
+          >
+            <span class="text-lg">🎟️</span>
+            <span>My Bookings</span>
+          </NuxtLink>
+        </div>
+
+        <!-- Auth Actions / Profile -->
         <div class="flex items-center gap-3">
-          <NuxtLink
-            to="/login"
-            class="px-6 py-2.5 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all uppercase tracking-widest"
-          >
-            Sign In
-          </NuxtLink>
-          <NuxtLink
-            to="/login"
-            class="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-slate-900/20 hover:bg-primary hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
-          >
-            Join Now
-          </NuxtLink>
+          <template v-if="!isAuthenticated">
+            <NuxtLink
+              to="/login"
+              class="px-6 py-2.5 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all uppercase tracking-widest"
+            >
+              Sign In
+            </NuxtLink>
+            <NuxtLink
+              to="/login"
+              class="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-slate-900/20 hover:bg-primary hover:shadow-primary/30 hover:scale-105 active:scale-95 transition-all"
+            >
+              Join Now
+            </NuxtLink>
+          </template>
+
+          <template v-else>
+            <div class="h-8 w-px bg-slate-200 hidden md:block mx-3"></div>
+
+            <div class="flex items-center gap-4">
+              <div class="text-right hidden lg:block">
+                <p
+                  class="text-xs font-black text-slate-900 uppercase tracking-tight leading-none mb-1"
+                >
+                  {{ user?.username || 'User' }}
+                </p>
+                <div class="flex items-center justify-end gap-1">
+                  <div
+                    class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"
+                  ></div>
+                  <p
+                    class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"
+                  >
+                    Online
+                  </p>
+                </div>
+              </div>
+
+              <div class="relative group cursor-pointer">
+                <div
+                  class="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-lg font-black text-slate-500 overflow-hidden transition-all group-hover:border-primary group-hover:text-primary group-hover:shadow-md"
+                >
+                  {{ user?.username?.charAt(0).toUpperCase() || 'U' }}
+                </div>
+                <!-- Dropdown -->
+                <div
+                  class="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform translate-y-2 group-hover:translate-y-0 z-50"
+                >
+                  <button
+                    @click="requestLogout"
+                    class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-red-500 transition-colors uppercase tracking-widest"
+                  >
+                    <span>🚪</span> Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </nav>
@@ -171,11 +244,31 @@
         </div>
       </div>
     </footer>
+
+    <!-- Logout Confirmation Modal -->
+    <LogoutConfirmationModal
+      :is-open="showLogoutModal"
+      @close="showLogoutModal = false"
+      @confirm="executeLogout"
+    />
   </div>
 </template>
 
 <script setup>
-// No script needed for this simple layout
+import LogoutConfirmationModal from "~/components/common/LogoutConfirmationModal.vue";
+
+const { isAuthenticated, user, logout } = useAuth();
+const showLogoutModal = ref(false);
+
+const requestLogout = () => {
+  showLogoutModal.value = true;
+};
+
+const executeLogout = () => {
+  showLogoutModal.value = false;
+  logout();
+  navigateTo("/login");
+};
 </script>
 
 <style scoped>

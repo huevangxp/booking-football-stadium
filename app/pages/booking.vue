@@ -1,44 +1,5 @@
 <template>
   <div class="min-h-screen bg-slate-50 font-sans text-slate-900">
-    <!-- Navigation -->
-    <nav
-      class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200"
-    >
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"
-      >
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/20"
-          >
-            S
-          </div>
-          <span class="text-xl font-black tracking-tight text-primary"
-            >Antigravity Sports</span
-          >
-        </div>
-        <div class="hidden md:flex items-center gap-8">
-          <a
-            href="#"
-            class="text-sm font-bold text-slate-600 hover:text-primary transition-colors"
-            >Home</a
-          >
-          <a href="#" class="text-sm font-bold text-primary">Book a Court</a>
-          <a
-            href="#"
-            class="text-sm font-bold text-slate-600 hover:text-primary transition-colors"
-            >My Bookings</a
-          >
-          <button
-            @click="logout"
-            class="btn btn-outline border-slate-200 text-slate-600 px-6 py-2 hover:bg-slate-50 transition-all font-black text-[10px] uppercase tracking-widest"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    </nav>
-
     <!-- Hero Section -->
     <header
       class="relative h-[400px] flex items-center justify-center text-center overflow-hidden"
@@ -339,6 +300,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "customer",
+});
+
 const selectedCourt = ref(null);
 const selectedDate = ref(null);
 const selectedSlots = ref([]);

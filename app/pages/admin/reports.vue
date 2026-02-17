@@ -1,182 +1,233 @@
 <template>
-  <div class="space-y-8 animate-in fade-in duration-500">
+  <div class="space-y-10 animate-in fade-in duration-700">
+    <!-- Analytics Header -->
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+      class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
     >
-      <div class="flex items-center gap-3">
-        <select
-          v-model="timeRange"
-          class="h-11 px-4 bg-white border border-slate-200 rounded-xl font-bold text-sm text-slate-700 outline-none focus:ring-2 focus:ring-primary shadow-sm"
+      <div>
+        <h2
+          class="text-4xl font-black text-slate-900 tracking-tighter uppercase"
         >
-          <option value="today">Today</option>
-          <option value="week">This Week</option>
-          <option value="month">This Month</option>
-          <option value="year">This Year</option>
-        </select>
-        <button class="btn btn-outline h-11 px-6 shadow-sm">
-          Custom Range
+          Business Intelligence
+        </h2>
+        <p
+          class="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2"
+        >
+          Deep dive into performance metrics
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <div
+          class="flex items-center bg-white p-1 rounded-2xl border border-slate-200 shadow-sm"
+        >
+          <button
+            v-for="range in ['Day', 'Week', 'Month', 'Year']"
+            :key="range"
+            @click="timeRange = range.toLowerCase()"
+            class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+            :class="
+              timeRange === range.toLowerCase()
+                ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20'
+                : 'text-slate-400 hover:text-slate-900'
+            "
+          >
+            {{ range }}
+          </button>
+        </div>
+        <button
+          class="h-10 w-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-primary hover:border-primary transition-all shadow-sm"
+        >
+          📅
+        </button>
+        <button
+          class="h-10 px-6 bg-emerald-500 text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all flex items-center gap-2"
+        >
+          <span>↓</span> Export
         </button>
       </div>
-      <button class="btn btn-primary h-11 px-8 shadow-lg shadow-primary/20">
-        <span class="mr-2 italic">📊</span> Export to Excel
-      </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Revenue Breakdown -->
-      <div class="card space-y-8 border-slate-200">
-        <div class="flex items-center justify-between">
-          <h3 class="text-xl font-black text-slate-900 tracking-tight">
-            Revenue Summary
-          </h3>
-          <span
-            class="text-[10px] font-black uppercase text-slate-400 tracking-widest"
-            >{{ timeRange }}</span
-          >
-        </div>
+      <div
+        class="lg:col-span-2 bg-white rounded-[40px] border border-slate-200 shadow-xl shadow-slate-200/40 p-10 relative overflow-hidden group"
+      >
+        <div
+          class="absolute -top-24 -right-24 w-64 h-64 bg-slate-50 rounded-full z-0 group-hover:scale-110 transition-transform duration-700"
+        ></div>
 
         <div
-          class="flex flex-col lg:flex-row lg:items-end justify-between gap-8"
+          class="relative z-10 flex flex-col md:flex-row justify-between md:items-end gap-10"
         >
-          <div class="space-y-1">
+          <div>
             <p
-              class="text-xs font-bold text-slate-400 uppercase tracking-widest"
+              class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2"
             >
-              Total Revenue
+              Total Generated Revenue
             </p>
-            <h2 class="text-5xl font-black text-slate-900 leading-tight">
-              ₭12.4M
-            </h2>
-            <div
-              class="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded-full text-[10px] font-black shadow-lg shadow-green-500/20"
-            >
-              <span>↑</span> 14% VS LAST MONTH
+            <div class="flex items-baseline gap-4">
+              <h3 class="text-6xl font-black text-slate-900 tracking-tighter">
+                ₭12.4M
+              </h3>
+              <div
+                class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100 flex items-center gap-1"
+              >
+                <span>↑</span> 14.2% Growth
+              </div>
             </div>
+            <p
+              class="text-xs font-bold text-slate-400 mt-4 max-w-xs leading-relaxed"
+            >
+              Significant increase compared to last {{ timeRange }}, driven by
+              weekend tournaments.
+            </p>
           </div>
 
-          <div class="w-full lg:w-48 space-y-4">
-            <div class="space-y-2">
-              <div
-                class="flex justify-between items-center text-xs font-bold uppercase tracking-wider"
-              >
-                <div class="flex items-center gap-2">
-                  <span
-                    class="w-2.5 h-2.5 rounded-full bg-primary shadow-sm"
-                  ></span>
-                  <span class="text-slate-500">Bank:</span>
-                </div>
-                <span class="text-slate-900">74%</span>
-              </div>
-              <div
-                class="flex justify-between items-center text-xs font-bold uppercase tracking-wider"
-              >
-                <div class="flex items-center gap-2">
-                  <span
-                    class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-sm"
-                  ></span>
-                  <span class="text-slate-500">Cash:</span>
-                </div>
-                <span class="text-slate-900">26%</span>
-              </div>
-            </div>
-
-            <div
-              class="h-4 bg-slate-100 rounded-full overflow-hidden flex shadow-inner border border-slate-200/50"
+          <div
+            class="w-full md:w-64 space-y-6 bg-slate-50 p-6 rounded-3xl border border-slate-100"
+          >
+            <h4
+              class="text-[9px] font-black text-slate-900 uppercase tracking-widest mb-4"
             >
-              <div
-                class="h-full bg-primary transition-all duration-1000"
-                style="width: 74%"
-              ></div>
-              <div
-                class="h-full bg-green-500 transition-all duration-1000"
-                style="width: 26%"
-              ></div>
+              Payment Methods
+            </h4>
+
+            <div class="space-y-4">
+              <div v-for="method in paymentMethods" :key="method.name">
+                <div
+                  class="flex justify-between items-center text-[9px] font-bold uppercase tracking-wider mb-2"
+                >
+                  <span class="text-slate-500 flex items-center gap-2">
+                    <span
+                      class="w-2 h-2 rounded-full"
+                      :class="method.color"
+                    ></span>
+                    {{ method.name }}
+                  </span>
+                  <span class="text-slate-900">{{ method.percent }}%</span>
+                </div>
+                <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                  <div
+                    class="h-full rounded-full transition-all duration-1000"
+                    :class="method.color"
+                    :style="{ width: method.percent + '%' }"
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Peak Hours Analysis -->
-      <div class="card space-y-8 border-slate-200">
-        <h3 class="text-xl font-black text-slate-900 tracking-tight">
-          Peak Hours Analysis
-        </h3>
-
+      <!-- Peak Hours -->
+      <div
+        class="bg-slate-900 rounded-[40px] shadow-2xl shadow-slate-900/40 p-10 text-white relative overflow-hidden flex flex-col"
+      >
         <div
-          class="h-[180px] flex items-end justify-between gap-2 border-b border-slate-100 pb-2"
-        >
+          class="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 rounded-full blur-[80px]"
+        ></div>
+
+        <div class="relative z-10 mb-8">
+          <h3 class="text-xl font-black uppercase tracking-tight">
+            Peak Activity
+          </h3>
+          <p
+            class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1"
+          >
+            Utilization Heatmap
+          </p>
+        </div>
+
+        <div class="flex-1 flex items-end justify-between gap-3 min-h-[200px]">
           <div
-            v-for="(val, hour) in peakData"
-            :key="hour"
-            class="flex-1 flex flex-col items-center gap-3"
+            v-for="(val, label) in peakData"
+            :key="label"
+            class="flex-1 flex flex-col items-center gap-3 group"
           >
             <div
-              class="w-full bg-slate-100 rounded-lg group hover:bg-primary transition-all duration-300 relative"
-              :class="{ 'bg-primary shadow-lg shadow-primary/20': val > 80 }"
+              class="w-full bg-white/10 rounded-t-xl relative transition-all duration-500 hover:bg-primary group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]"
               :style="{ height: val + '%' }"
             >
+              <!-- Tooltip -->
               <div
-                class="absolute -top-7 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[8px] font-black px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                class="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-slate-900 px-2 py-1 rounded text-[8px] font-black opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
               >
-                {{ val }}%
+                {{ val }}% Load
               </div>
             </div>
             <span
-              class="text-[8px] font-black text-slate-400 uppercase tracking-tighter"
-              >{{ hour }}</span
+              class="text-[8px] font-bold text-slate-500 uppercase tracking-wider -rotate-45 origin-center mt-2"
+              >{{ label }}</span
             >
           </div>
-        </div>
-
-        <div
-          class="bg-primary/5 p-4 rounded-xl flex items-center gap-4 border border-primary/10"
-        >
-          <div
-            class="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-xl"
-          >
-            🕒
-          </div>
-          <p class="text-sm font-bold text-slate-700">
-            Most active time detected:
-            <span class="text-primary font-black">17:00 - 20:00</span>
-          </p>
         </div>
       </div>
 
       <!-- Top Customers -->
-      <div class="card lg:col-span-2 space-y-8 border-slate-200">
-        <h3 class="text-xl font-black text-slate-900 tracking-tight">
-          Top Loyal Customers
-        </h3>
+      <div
+        class="lg:col-span-3 bg-white rounded-[40px] border border-slate-200 shadow-xl shadow-slate-200/30 p-10"
+      >
+        <div class="flex justify-between items-end mb-8">
+          <div>
+            <h3
+              class="text-2xl font-black text-slate-900 tracking-tight uppercase"
+            >
+              Loyalty Leaderboard
+            </h3>
+            <p
+              class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1"
+            >
+              Top spending clients for this period
+            </p>
+          </div>
+          <button
+            class="text-[10px] font-black text-primary uppercase tracking-widest hover:underline underline-offset-4"
+          >
+            View Full Report →
+          </button>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
           <div
             v-for="(cust, index) in topCustomers"
             :key="cust.name"
-            class="flex items-center gap-5 p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-primary/30 transition-all"
+            class="p-6 rounded-3xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-primary/20 hover:shadow-xl transition-all group relative overflow-hidden cursor-pointer"
           >
-            <span class="text-3xl font-black text-slate-200 italic">{{
-              index + 1
-            }}</span>
-            <div class="flex-1 min-w-0">
-              <p
-                class="text-sm font-black text-slate-900 truncate leading-tight"
+            <div
+              class="absolute top-0 right-0 p-4 text-4xl font-black text-slate-200 italic opacity-50 group-hover:opacity-20 transition-opacity"
+            >
+              #{{ index + 1 }}
+            </div>
+
+            <div class="relative z-10">
+              <div
+                class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-xl shadow-sm mb-4 border border-slate-100 group-hover:scale-110 transition-transform origin-left"
+              >
+                🏆
+              </div>
+              <h4
+                class="text-sm font-black text-slate-900 uppercase tracking-tight truncate mb-1"
               >
                 {{ cust.name }}
-              </p>
+              </h4>
               <p
-                class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-widest"
+                class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-4"
               >
-                {{ cust.bookings }} BOOKINGS
+                {{ cust.bookings }} Sessions Completed
               </p>
-            </div>
-            <div class="text-right">
-              <p class="text-xs font-black text-primary leading-tight">
-                ₭{{ (cust.spent / 1000000).toFixed(1) }}M
-              </p>
-              <p class="text-[8px] font-black text-slate-400 uppercase">
-                SPENT
-              </p>
+
+              <div
+                class="pt-4 border-t border-slate-200/50 flex justify-between items-center"
+              >
+                <span
+                  class="text-[8px] font-black text-slate-400 uppercase tracking-widest"
+                  >Lifetime Value</span
+                >
+                <span class="text-xs font-black text-primary"
+                  >₭{{ (cust.spent / 1000000).toFixed(1) }}M</span
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -192,15 +243,20 @@ definePageMeta({
 
 const timeRange = ref("month");
 
+const paymentMethods = [
+  { name: "Bank Transfer", percent: 74, color: "bg-indigo-600" },
+  { name: "Cash Payment", percent: 26, color: "bg-emerald-500" },
+];
+
 const peakData = {
-  "8am": 10,
-  "10am": 20,
-  "12pm": 45,
-  "2pm": 30,
-  "4pm": 60,
-  "6pm": 95,
-  "8pm": 85,
-  "10pm": 40,
+  "08:00": 15,
+  "10:00": 35,
+  "12:00": 60,
+  "14:00": 45,
+  "16:00": 85,
+  "18:00": 98,
+  "20:00": 90,
+  "22:00": 55,
 };
 
 const topCustomers = [

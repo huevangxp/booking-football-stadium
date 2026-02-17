@@ -1,113 +1,181 @@
 <template>
-  <div class="space-y-8 animate-in fade-in duration-500">
-    <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-black text-slate-900 tracking-tight">
-        Court Management
-      </h2>
-      <button class="btn btn-primary shadow-lg shadow-primary/20 h-11 px-6">
-        <span class="text-xl mr-2">+</span> Add New Court
-      </button>
+  <div class="space-y-10 animate-in fade-in duration-700">
+    <!-- Header Section -->
+    <div
+      class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
+    >
+      <div>
+        <h2
+          class="text-4xl font-black text-slate-900 tracking-tighter uppercase"
+        >
+          Venue Console
+        </h2>
+        <p
+          class="text-sm font-bold text-slate-400 uppercase tracking-widest mt-2"
+        >
+          Manage courts, pricing & facilities
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="relative group">
+          <span
+            class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors"
+            >🔍</span
+          >
+          <input
+            type="text"
+            placeholder="Search venues..."
+            class="w-64 h-12 pl-12 pr-4 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-900 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all shadow-sm"
+          />
+        </div>
+        <button
+          class="h-12 px-8 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+        >
+          <span class="text-xl leading-none">+</span> Add Court
+        </button>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+    <!-- Venue List -->
+    <div
+      class="bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden"
+    >
+      <!-- Table Header -->
       <div
-        v-for="venue in venues"
-        :key="venue.id"
-        class="card p-0 overflow-hidden group"
+        class="hidden md:grid grid-cols-12 gap-6 px-10 py-6 bg-slate-50/50 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]"
       >
+        <div class="col-span-4">Court Details</div>
+        <div class="col-span-3">Pricing Structure</div>
+        <div class="col-span-3">Facilities & Specs</div>
+        <div class="col-span-2 text-right">Status & Action</div>
+      </div>
+
+      <div class="divide-y divide-slate-50">
         <div
-          class="h-48 bg-slate-200 relative flex items-center justify-center overflow-hidden"
+          v-for="venue in venues"
+          :key="venue.id"
+          class="group relative md:grid grid-cols-12 gap-6 px-10 py-8 hover:bg-slate-50/80 transition-all duration-300"
         >
           <div
-            class="absolute inset-0 bg-primary/10 group-hover:bg-primary/0 transition-all duration-300"
+            class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"
           ></div>
-          <span
-            class="text-slate-400 font-black uppercase tracking-widest text-xs z-10"
-            >{{ venue.type }}</span
-          >
-          <span
-            class="absolute top-4 right-4 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider text-white shadow-lg"
-            :class="
-              venue.active ? 'bg-green-500 shadow-green-500/20' : 'bg-slate-400'
-            "
-          >
-            {{ venue.active ? "Active" : "Offline" }}
-          </span>
-        </div>
 
-        <div class="p-6 space-y-5">
-          <div class="flex justify-between items-start">
+          <!-- Court Details -->
+          <div class="col-span-4 flex items-center gap-6">
+            <div
+              class="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center text-3xl shadow-inner group-hover:scale-105 transition-transform duration-500 relative overflow-hidden"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-transparent to-black/5"
+              ></div>
+              <span>{{ getIcon(venue.type) }}</span>
+            </div>
             <div>
-              <h3 class="text-lg font-black text-slate-900 leading-tight">
+              <h3
+                class="text-lg font-black text-slate-900 uppercase tracking-tight mb-1 group-hover:text-primary transition-colors"
+              >
                 {{ venue.name }}
               </h3>
-              <p
-                class="text-xs font-bold text-slate-400 uppercase tracking-wider"
-              >
-                {{ venue.type }}
-              </p>
-            </div>
-            <button
-              class="w-8 h-8 flex items-center justify-center bg-slate-100 rounded-lg hover:bg-primary hover:text-white transition-all duration-200 shadow-sm text-sm"
-            >
-              ✏️
-            </button>
-          </div>
-
-          <div
-            class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-100"
-          >
-            <div class="flex justify-between items-center">
               <span
-                class="text-xs font-bold text-slate-500 uppercase tracking-wider"
-                >Normal</span
-              >
-              <span class="text-sm font-black text-slate-900"
-                >₭{{ venue.priceNormal.toLocaleString() }}/hr</span
-              >
-            </div>
-            <div
-              class="flex justify-between items-center bg-green-500/5 -mx-2 px-2 py-1 rounded-lg"
-            >
-              <span
-                class="text-xs font-bold text-green-600 uppercase tracking-wider"
-                >Happy Hour</span
-              >
-              <span class="text-sm font-black text-green-600"
-                >₭{{ venue.priceHappy.toLocaleString() }}/hr</span
+                class="px-2 py-1 bg-slate-100 border border-slate-200 rounded-md text-[9px] font-bold text-slate-500 uppercase tracking-wider"
+                >{{ venue.type }}</span
               >
             </div>
           </div>
 
-          <div class="flex flex-wrap gap-2">
-            <span
-              v-for="f in venue.facilities"
-              :key="f"
-              class="px-2 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-md uppercase border border-slate-200/50"
-              >{{ f }}</span
-            >
-          </div>
-
-          <div
-            class="pt-4 border-t border-slate-100 flex items-center justify-between"
-          >
+          <!-- Pricing -->
+          <div class="col-span-3 flex flex-col justify-center gap-3">
             <div class="flex items-center gap-3">
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  :checked="venue.active"
-                  class="sr-only peer"
-                />
-                <div
-                  class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"
-                ></div>
-              </label>
-              <span class="text-xs font-bold text-slate-600 uppercase"
-                >Accept Bookings</span
+              <div class="w-2 h-2 rounded-full bg-slate-300"></div>
+              <span
+                class="text-xs font-bold text-slate-500 uppercase tracking-wide w-16"
+                >Standard</span
               >
+              <span class="text-sm font-black text-slate-900 tabular-nums"
+                >₭{{ venue.priceNormal.toLocaleString() }}</span
+              >
+            </div>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-2 h-2 rounded-full bg-green-500 animate-pulse"
+              ></div>
+              <span
+                class="text-xs font-bold text-green-600 uppercase tracking-wide w-16"
+                >Peak/Happy</span
+              >
+              <span class="text-sm font-black text-green-600 tabular-nums"
+                >₭{{ venue.priceHappy.toLocaleString() }}</span
+              >
+            </div>
+          </div>
+
+          <!-- Facilities -->
+          <div class="col-span-3 flex flex-col justify-center">
+            <p
+              class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3"
+            >
+              Amenities Included
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="f in venue.facilities"
+                :key="f"
+                class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-[9px] font-bold text-slate-600 uppercase tracking-wider shadow-sm group-hover:border-primary/20 transition-colors"
+              >
+                {{ f }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Status & Actions -->
+          <div class="col-span-2 flex flex-col items-end justify-center gap-4">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                :checked="venue.active"
+                class="sr-only peer"
+              />
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500 shadow-inner"
+              ></div>
+              <span
+                class="ml-3 text-[9px] font-black uppercase tracking-widest"
+                :class="venue.active ? 'text-green-600' : 'text-slate-400'"
+                >{{ venue.active ? "Online" : "Offline" }}</span
+              >
+            </label>
+
+            <div class="flex gap-2">
+              <button
+                class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:text-primary hover:border-primary hover:bg-slate-50 transition-all"
+              >
+                ✎
+              </button>
+              <button
+                class="w-9 h-9 flex items-center justify-center rounded-xl border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-500 hover:bg-red-50 transition-all"
+              >
+                🗑
+              </button>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Table Footer -->
+      <div
+        class="p-8 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between"
+      >
+        <p
+          class="text-[10px] font-black text-slate-400 uppercase tracking-widest"
+        >
+          Displaying 4 Venues
+        </p>
+        <button
+          class="text-[10px] font-black text-primary uppercase tracking-widest hover:underline underline-offset-4"
+        >
+          Download Report
+        </button>
       </div>
     </div>
   </div>
@@ -121,7 +189,7 @@ definePageMeta({
 const venues = ref([
   {
     id: 1,
-    name: "MAIN COURT 1",
+    name: "Main Court 1",
     type: "Football 5-a-side",
     priceNormal: 150000,
     priceHappy: 100000,
@@ -130,7 +198,7 @@ const venues = ref([
   },
   {
     id: 2,
-    name: "MAIN COURT 2",
+    name: "Main Court 2",
     type: "Football 5-a-side",
     priceNormal: 150000,
     priceHappy: 100000,
@@ -139,7 +207,7 @@ const venues = ref([
   },
   {
     id: 3,
-    name: "WEST COURT 3",
+    name: "West Court 3",
     type: "Football 7-a-side",
     priceNormal: 250000,
     priceHappy: 200000,
@@ -148,7 +216,7 @@ const venues = ref([
   },
   {
     id: 4,
-    name: "BADMINTON HALL 1",
+    name: "Badminton Hall 1",
     type: "Badminton",
     priceNormal: 50000,
     priceHappy: 35000,
@@ -156,4 +224,10 @@ const venues = ref([
     facilities: ["AC", "Wifi"],
   },
 ]);
+
+const getIcon = (type) => {
+  if (type.includes("Football")) return "⚽";
+  if (type.includes("Badminton")) return "🏸";
+  return "🏟️";
+};
 </script>

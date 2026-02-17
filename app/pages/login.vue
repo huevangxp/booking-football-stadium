@@ -20,9 +20,11 @@
       <div
         class="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-primary to-blue-900 text-white relative overflow-hidden"
       >
-        <div
-          class="absolute inset-0 bg-[url('/login_bg.jpg')] bg-cover bg-center opacity-30 mix-blend-overlay"
-        ></div>
+        <img
+          src="/login_bg.jpg"
+          alt="Stadium Background"
+          class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
+        />
 
         <div class="relative z-10">
           <div class="flex items-center gap-3 mb-12">
@@ -201,7 +203,7 @@ const handleLogin = () => {
   if (loginForm.value.username === "admin") {
     navigateTo("/admin/dashboard");
   } else if (loginForm.value.username === "customer") {
-    navigateTo("/booking");
+    navigateTo("/customer");
   } else {
     alert('Please enter "admin" or "customer" to test the roles.');
   }

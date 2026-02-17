@@ -1,229 +1,236 @@
 <template>
-  <div class="space-y-8 animate-in fade-in duration-500">
-    <!-- Page Header & Controls -->
+  <div
+    class="h-[calc(100vh-100px)] flex flex-col space-y-6 animate-in fade-in duration-700"
+  >
+    <!-- Header Strategy Console -->
     <div
-      class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6"
+      class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 shrink-0"
     >
-      <div class="flex flex-wrap items-center gap-4">
-        <div
-          class="flex items-center bg-white border border-slate-200 rounded-2xl p-1.5 shadow-sm ring-1 ring-slate-900/5"
-        >
-          <button
-            @click="navigateDate(-1)"
-            class="w-10 h-10 flex items-center justify-center hover:bg-slate-50 text-slate-400 hover:text-primary rounded-xl transition-all duration-200"
+      <div>
+        <div class="flex items-center gap-3 mb-1">
+          <h2
+            class="text-4xl font-black text-slate-900 tracking-tighter uppercase"
           >
-            <span class="text-xl">←</span>
-          </button>
-          <div class="px-6 flex flex-col items-center min-w-[200px]">
-            <h2
-              class="font-black text-slate-900 leading-tight uppercase tracking-tight"
-            >
-              {{ formattedDateDisplay }}
-            </h2>
-            <p
-              class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mt-0.5"
-            >
-              Live Schedule
-            </p>
-          </div>
-          <button
-            @click="navigateDate(1)"
-            class="w-10 h-10 flex items-center justify-center hover:bg-slate-50 text-slate-400 hover:text-primary rounded-xl transition-all duration-200"
+            Operations Grid
+          </h2>
+          <span
+            class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-widest animate-pulse"
+            >Live</span
           >
-            <span class="text-xl">→</span>
-          </button>
         </div>
-        <button
-          @click="resetToToday"
-          class="h-12 px-6 bg-white border border-slate-200 rounded-2xl font-black text-xs uppercase tracking-widest text-slate-600 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all shadow-sm"
-        >
-          Today
-        </button>
+        <p class="text-sm font-bold text-slate-400 uppercase tracking-widest">
+          Master Schedule & Resource Allocation
+        </p>
       </div>
 
-      <div class="flex items-center gap-4 w-full lg:w-auto">
-        <div
-          class="flex bg-slate-200/50 p-1.5 rounded-2xl shadow-inner border border-slate-200"
-        >
+      <div
+        class="flex items-center gap-4 bg-white p-2 rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50"
+      >
+        <!-- View Toggle -->
+        <div class="flex bg-slate-100 p-1 rounded-2xl">
           <button
-            v-for="v in ['day', 'week', 'month']"
+            v-for="v in ['Day', 'Week', 'Month']"
             :key="v"
-            @click="view = v"
-            class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300"
+            @click="view = v.toLowerCase()"
+            class="px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 relative overflow-hidden"
             :class="
-              view === v
-                ? 'bg-white text-primary shadow-lg ring-1 ring-slate-900/5'
-                : 'text-slate-500 hover:text-slate-800'
+              view === v.toLowerCase()
+                ? 'bg-white text-slate-900 shadow-md'
+                : 'text-slate-400 hover:text-slate-600'
             "
           >
             {{ v }}
           </button>
         </div>
+
+        <div class="w-px h-8 bg-slate-200"></div>
+
+        <!-- Date Navigation -->
+        <div class="flex items-center gap-2">
+          <button
+            @click="navigateDate(-1)"
+            class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-50 text-slate-400 hover:text-primary transition-colors"
+          >
+            ←
+          </button>
+          <div class="px-2 text-center min-w-[140px]">
+            <span
+              class="block text-sm font-black text-slate-900 uppercase tracking-tight leading-none"
+              >{{ formattedDateDisplay }}</span
+            >
+            <span
+              class="block text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5"
+              >Today</span
+            >
+          </div>
+          <button
+            @click="navigateDate(1)"
+            class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-50 text-slate-400 hover:text-primary transition-colors"
+          >
+            →
+          </button>
+        </div>
+
+        <div class="w-px h-8 bg-slate-200"></div>
+
         <button
-          class="h-12 flex-1 lg:flex-none px-8 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/30 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
           @click="showBookingModal = true"
+          class="h-11 px-6 bg-primary text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
         >
-          <span class="text-xl leading-none">+</span> New Reservation
+          <span class="text-lg">+</span> Reserve
         </button>
       </div>
     </div>
 
-    <!-- Calendar Viewport -->
+    <!-- Calendar Surface -->
     <div
-      class="card p-0 overflow-hidden border-slate-200 shadow-2xl shadow-slate-200/50 group/calendar"
+      class="flex-1 bg-white rounded-[40px] border border-slate-200 shadow-2xl shadow-slate-200/40 relative overflow-hidden flex flex-col"
     >
-      <!-- Day View (Current Default) -->
-      <div v-if="view === 'day'" class="flex h-[750px] relative">
+      <!-- Day View -->
+      <div v-if="view === 'day'" class="flex-1 flex overflow-hidden">
         <!-- Time Axis -->
         <div
-          class="w-24 shrink-0 flex flex-col bg-slate-50/80 backdrop-blur-sm border-r border-slate-200 z-30"
+          class="w-20 shrink-0 flex flex-col bg-slate-50 border-r border-slate-200"
         >
           <div
-            class="h-16 flex items-center justify-center border-b border-slate-200"
+            class="h-20 flex items-center justify-center border-b border-slate-200 bg-slate-100/50"
           >
             <span
-              class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]"
+              class="text-[10px] font-black text-slate-400 uppercase tracking-widest"
               >GMT+7</span
             >
           </div>
-          <div class="flex-1 overflow-y-auto custom-scrollbar">
-            <div
-              v-for="hour in hours"
-              :key="hour"
-              class="h-20 flex flex-col items-center justify-center border-b border-slate-100"
-            >
-              <span class="text-sm font-black text-slate-900 tabular-nums"
-                >{{ hour.toString().padStart(2, "0") }}:00</span
+          <div class="flex-1 overflow-hidden relative">
+            <!-- Sync Scroll Container -->
+            <div ref="timeAxisDetails" class="absolute inset-0 overflow-hidden">
+              <div
+                v-for="hour in hours"
+                :key="hour"
+                class="h-24 flex flex-col items-center justify-start pt-2 border-b border-slate-100"
               >
-              <span class="text-[9px] font-bold text-slate-400 uppercase">{{
-                hour < 12 ? "AM" : "PM"
-              }}</span>
+                <span class="text-xs font-black text-slate-700 tabular-nums"
+                  >{{ hour.toString().padStart(2, "0") }}:00</span
+                >
+                <span
+                  class="text-[8px] font-bold text-slate-400 uppercase tracking-wider"
+                  >{{ hour < 12 ? "AM" : "PM" }}</span
+                >
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Scrollable Grid Area -->
+        <!-- Grid Surface -->
         <div
           class="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar relative"
+          ref="gridScrollArea"
+          @scroll="syncScroll"
         >
-          <!-- Calendar Body -->
           <div class="flex min-w-full">
             <div
-              v-for="(court, cIdx) in courts"
+              v-for="court in courts"
               :key="court.id"
-              class="flex-1 min-w-[240px] border-r border-slate-100 last:border-r-0 relative group/court"
+              class="flex-1 min-w-[260px] border-r border-slate-100 last:border-r-0 relative bg-white group/court"
             >
-              <!-- Sticky Court Header -->
+              <!-- Sticky Header -->
               <div
-                class="sticky top-0 h-16 bg-white/90 backdrop-blur-md border-b border-slate-200 flex flex-col items-center justify-center z-20 shadow-sm"
+                class="sticky top-0 z-30 h-20 bg-white/95 backdrop-blur-md border-b border-slate-200 flex flex-col items-center justify-center shadow-sm"
               >
-                <h3
-                  class="font-black text-slate-900 text-sm tracking-tight leading-none mb-1 group-hover/court:text-primary transition-colors uppercase"
+                <div
+                  class="flex items-center gap-2 text-slate-900 group-hover/court:text-primary transition-colors"
                 >
-                  {{ court.name }}
-                </h3>
-                <div class="flex gap-1.5">
+                  <span class="text-lg">{{ getIcon(court.name) }}</span>
+                  <h3 class="font-black text-sm uppercase tracking-tight">
+                    {{ court.name }}
+                  </h3>
+                </div>
+                <div class="flex items-center gap-1.5 mt-1">
+                  <div
+                    class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
+                  ></div>
                   <span
-                    class="w-1.5 h-1.5 rounded-full"
-                    :class="court.id % 2 === 0 ? 'bg-primary' : 'bg-indigo-400'"
-                  ></span>
-                  <p
-                    class="text-[9px] font-black text-slate-400 uppercase tracking-widest"
+                    class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"
+                    >Active</span
                   >
-                    Available
-                  </p>
                 </div>
               </div>
 
-              <!-- Time Slots Grid -->
+              <!-- Slots -->
               <div class="relative">
                 <div
                   v-for="hour in hours"
                   :key="hour"
-                  class="h-20 border-b border-slate-50 relative hover:bg-slate-100/30 transition-colors group/slot"
+                  class="h-24 border-b border-slate-50 relative group/slot transition-all hover:bg-slate-50 cursor-pointer"
                   @click="handleSlotClick(court, hour)"
                 >
-                  <!-- Visual Grid Markers -->
+                  <!-- Hover Add Indicator -->
                   <div
-                    class="absolute top-1/2 left-0 right-0 h-px border-t border-dashed border-slate-200 pointer-events-none"
-                  ></div>
-
-                  <!-- Drop Zone Indicator -->
-                  <div
-                    class="absolute inset-2 rounded-xl border-2 border-dashed border-primary/0 group-hover/slot:border-primary/20 transition-all flex items-center justify-center opacity-0 group-hover/slot:opacity-100 pointer-events-none bg-primary/5"
+                    class="absolute inset-0 flex items-center justify-center opacity-0 group-hover/slot:opacity-100 transition-opacity z-0"
                   >
                     <span
-                      class="text-[10px] font-black text-primary uppercase tracking-widest"
-                      >+ Reserve {{ hour }}:00</span
+                      class="text-[10px] font-black text-primary/40 uppercase tracking-widest"
+                      >+ Book Slot</span
                     >
                   </div>
 
-                  <!-- Render Bookings -->
+                  <!-- Bookings -->
                   <div
                     v-for="booking in getBookings(court.id, hour)"
                     :key="booking.id"
-                    class="absolute inset-x-2 rounded-2xl p-4 z-10 flex flex-col shadow-2xl transition-all duration-300 transform hover:scale-[1.02] hover:z-20 cursor-pointer overflow-hidden border-2"
+                    class="absolute inset-x-2 z-10 rounded-2xl p-4 border shadow-xl flex flex-col cursor-pointer hover:z-20 hover:scale-[1.02] transition-all duration-300 group/card overflow-hidden"
                     :class="{
-                      'bg-green-600 border-green-700 text-white':
+                      'bg-emerald-500 border-emerald-600 text-white':
                         booking.status === 'paid',
                       'bg-amber-400 border-amber-500 text-slate-900':
                         booking.status === 'pending',
-                      'bg-red-600 border-red-700 text-white':
+                      'bg-red-500 border-red-600 text-white':
                         booking.status === 'closed',
                     }"
                     :style="{
-                      height: booking.duration * 80 - 8 + 'px',
-                      top: (booking.minuteOffset * 80) / 60 + 4 + 'px',
+                      height:
+                        booking.duration * 96 - 16 + 'px' /* 96px is h-24 */,
+                      top: (booking.minuteOffset / 60) * 96 + 8 + 'px',
                     }"
                   >
-                    <!-- Booking Header -->
-                    <div class="flex justify-between items-start mb-2">
-                      <span
-                        class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider"
-                        :class="
-                          booking.status === 'paid'
-                            ? 'bg-white/20 text-white'
-                            : booking.status === 'pending'
-                              ? 'bg-black/10 text-slate-900'
-                              : 'bg-white/20 text-white'
-                        "
-                      >
-                        {{ booking.status }}
-                      </span>
-                      <span
-                        class="text-[10px] font-black opacity-50 tabular-nums"
+                    <!-- Card Header -->
+                    <div class="flex justify-between items-start mb-1">
+                      <div class="flex items-center gap-1.5">
+                        <span
+                          class="w-1.5 h-1.5 rounded-full bg-white/50"
+                        ></span>
+                        <span
+                          class="text-[9px] font-black uppercase tracking-widest opacity-90"
+                          >{{ booking.status }}</span
+                        >
+                      </div>
+                      <span class="text-[9px] font-bold opacity-60 tabular-nums"
                         >#{{ booking.id }}</span
                       >
                     </div>
 
-                    <!-- Booking Info -->
-                    <div class="flex-1 overflow-hidden">
+                    <!-- Card Body -->
+                    <div class="flex-1">
                       <p
-                        class="text-xs font-black truncate uppercase tracking-tight"
+                        class="text-xs font-black uppercase tracking-tight truncate leading-tight"
                       >
                         {{ booking.user }}
                       </p>
-                      <p class="text-[9px] font-bold opacity-70 mt-0.5">
-                        {{ booking.startTime }} - {{ booking.endTime }}
-                      </p>
+                      <div class="flex items-center gap-1 mt-1 opacity-80">
+                        <span class="text-[10px]">⏰</span>
+                        <span class="text-[10px] font-bold tabular-nums"
+                          >{{ booking.startTime }} - {{ booking.endTime }}</span
+                        >
+                      </div>
                     </div>
 
-                    <!-- Action Hint -->
+                    <!-- Card Actions (Hover) -->
                     <div
-                      class="flex justify-between items-center mt-3 pt-2 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                      class="absolute bottom-2 right-2 opacity-0 group-hover/card:opacity-100 transition-opacity bg-white/20 hover:bg-white/30 rounded-lg px-2 py-1"
                     >
-                      <div class="flex -space-x-2">
-                        <div
-                          class="w-5 h-5 rounded-full border border-white bg-slate-200 flex items-center justify-center text-[8px]"
-                        >
-                          👤
-                        </div>
-                      </div>
-                      <button
-                        class="text-[9px] font-black uppercase tracking-widest bg-white/10 hover:bg-white/20 px-2 py-1 rounded-md transition-colors"
+                      <span
+                        class="text-[8px] font-black uppercase tracking-wider text-white"
+                        >Manage</span
                       >
-                        Details
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -233,199 +240,150 @@
         </div>
       </div>
 
-      <!-- Week View Placeholder -->
+      <!-- Other Views -->
       <div
-        v-else-if="view === 'week'"
-        class="h-[750px] flex items-center justify-center bg-slate-50"
+        v-else
+        class="flex-1 flex flex-col items-center justify-center bg-slate-50/50"
       >
-        <div class="text-center space-y-4">
-          <div class="text-6xl">🗓️</div>
-          <h3 class="text-2xl font-black text-slate-900 uppercase">
-            Weekly View
-          </h3>
-          <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">
-            Visualizing sessions across the next 7 days
-          </p>
-          <div
-            class="p-4 bg-primary/5 rounded-2xl border border-primary/20 text-primary font-black text-xs uppercase tracking-widest"
-          >
-            This module is being optimized for large screens
-          </div>
+        <div
+          class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-xl mb-6 text-slate-300"
+        >
+          {{ view === "week" ? "📅" : "📊" }}
         </div>
-      </div>
-
-      <!-- Month View Placeholder -->
-      <div
-        v-else-if="view === 'month'"
-        class="h-[750px] flex items-center justify-center bg-slate-50"
-      >
-        <div class="text-center space-y-4">
-          <div class="text-6xl">📊</div>
-          <h3 class="text-2xl font-black text-slate-900 uppercase">
-            Monthly Capacity
-          </h3>
-          <p class="text-slate-500 font-bold uppercase tracking-widest text-xs">
-            High-level availability overview
-          </p>
-          <div
-            class="p-4 bg-primary/5 rounded-2xl border border-primary/20 text-primary font-black text-xs uppercase tracking-widest"
-          >
-            Full calendar grid integration in progress
-          </div>
-        </div>
+        <h3
+          class="text-2xl font-black text-slate-900 uppercase tracking-tight mb-2"
+        >
+          {{ view }} View In Development
+        </h3>
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          This module is part of the Phase 2 rollout.
+        </p>
       </div>
     </div>
 
-    <!-- Modern Reservation Modal -->
+    <!-- Booking Modal -->
     <Teleport to="body">
       <div
         v-if="showBookingModal"
-        class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-md animate-in fade-in duration-300"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-md animate-in fade-in"
         @click="showBookingModal = false"
       >
         <div
-          class="bg-white rounded-[32px] shadow-[0_32px_128px_-16px_rgba(30,58,138,0.3)] w-full max-w-lg overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-8 duration-500 border border-slate-100"
+          class="bg-white rounded-[32px] w-full max-w-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-slate-100"
           @click.stop
         >
           <!-- Modal Header -->
-          <div
-            class="relative px-10 py-10 bg-gradient-to-br from-primary to-blue-900 text-white overflow-hidden"
-          >
+          <div class="bg-slate-900 p-8 text-white relative overflow-hidden">
             <div
-              class="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"
+              class="absolute -top-12 -right-12 w-40 h-40 bg-primary rounded-full blur-3xl opacity-50"
             ></div>
-            <div
-              class="absolute -bottom-16 -left-16 w-48 h-48 bg-primary-light/10 rounded-full blur-2xl"
-            ></div>
-
             <div class="relative z-10 flex justify-between items-start">
               <div>
-                <p
-                  class="text-[10px] font-black uppercase tracking-[0.4em] text-white/60 mb-2"
-                >
-                  Internal Management
-                </p>
-                <h3 class="text-3xl font-black tracking-tighter">
-                  Quick Reservation
+                <h3 class="text-2xl font-black uppercase tracking-tight">
+                  New Reservation
                 </h3>
+                <p
+                  class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1"
+                >
+                  Manual Entry Protocol
+                </p>
               </div>
               <button
                 @click="showBookingModal = false"
-                class="w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-2xl text-white transition-all text-2xl font-bold"
+                class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
               >
-                ×
+                ✕
               </button>
             </div>
           </div>
 
-          <form
-            @submit.prevent="saveBooking"
-            class="px-10 py-10 space-y-8 bg-white"
-          >
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <!-- Customer Detail -->
-              <div class="md:col-span-2 space-y-2">
+          <!-- Modal Body -->
+          <form @submit.prevent="saveBooking" class="p-8 space-y-6">
+            <div class="grid grid-cols-2 gap-6">
+              <div class="col-span-2 space-y-2">
                 <label
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1"
-                  >Customer Identification</label
-                >
-                <div class="relative group">
-                  <span
-                    class="absolute left-5 top-1/2 -translate-y-1/2 text-lg group-focus-within:scale-110 transition-transform"
-                    >👤</span
-                  >
-                  <input
-                    v-model="newBooking.user"
-                    type="text"
-                    placeholder="Full name or VIP ID"
-                    class="w-full h-14 pl-14 pr-6 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-slate-900 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all shadow-inner"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1"
-                  >Contact Phone</label
+                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1"
+                  >Client Name</label
                 >
                 <input
-                  v-model="newBooking.phone"
-                  type="tel"
-                  placeholder="020-XXXX-XXXX"
-                  class="w-full h-14 px-6 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-slate-900 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all shadow-inner"
+                  v-model="newBooking.user"
+                  type="text"
+                  class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+                  placeholder="e.g. Somchai Fc"
                   required
                 />
               </div>
 
               <div class="space-y-2">
                 <label
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1"
-                  >Target Field</label
+                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1"
+                  >Contact</label
+                >
+                <input
+                  v-model="newBooking.phone"
+                  type="text"
+                  class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-300"
+                  placeholder="020..."
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label
+                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1"
+                  >Court</label
                 >
                 <select
                   v-model="newBooking.courtId"
-                  class="w-full h-14 px-6 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-slate-900 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all shadow-inner appearance-none cursor-pointer"
+                  class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer"
                 >
-                  <option
-                    v-for="court in courts"
-                    :key="court.id"
-                    :value="court.id"
-                  >
-                    {{ court.name }}
+                  <option v-for="c in courts" :key="c.id" :value="c.id">
+                    {{ c.name }}
                   </option>
                 </select>
               </div>
 
               <div class="space-y-2">
                 <label
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1"
-                  >Start Hour (24h)</label
+                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1"
+                  >Start Time</label
                 >
                 <input
                   v-model="newBooking.startTime"
                   type="time"
-                  class="w-full h-14 px-6 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-slate-900 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all shadow-inner"
+                  class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   required
                 />
               </div>
 
               <div class="space-y-2">
                 <label
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1"
-                  >Session Duration</label
+                  class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1"
+                  >Duration (Hrs)</label
                 >
-                <div class="relative">
-                  <input
-                    v-model="newBooking.duration"
-                    type="number"
-                    step="0.5"
-                    min="0.5"
-                    class="w-full h-14 px-6 bg-slate-50 border border-slate-200 rounded-2xl font-bold text-slate-900 focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none transition-all shadow-inner"
-                    required
-                  />
-                  <span
-                    class="absolute right-6 top-1/2 -translate-y-1/2 text-[10px] font-black text-slate-400 uppercase tracking-widest"
-                    >Hours</span
-                  >
-                </div>
+                <input
+                  v-model="newBooking.duration"
+                  type="number"
+                  step="0.5"
+                  min="0.5"
+                  class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  required
+                />
               </div>
             </div>
 
-            <!-- Modal Actions -->
-            <div class="flex gap-4 pt-6 border-t border-slate-100">
+            <div class="pt-4 flex gap-3">
               <button
                 type="button"
-                class="flex-1 h-14 rounded-2xl font-black text-xs uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-all font-bold"
                 @click="showBookingModal = false"
+                class="flex-1 h-12 rounded-xl border border-slate-200 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 hover:text-red-500 transition-colors"
               >
-                Discard
+                Cancel
               </button>
               <button
                 type="submit"
-                class="flex-1 h-14 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all font-bold"
+                class="flex-1 h-12 rounded-xl bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/25 hover:bg-primary-dark transition-colors"
               >
-                Establish Booking
+                Confirm Booking
               </button>
             </div>
           </form>
@@ -442,32 +400,33 @@ definePageMeta({
 
 const view = ref("day");
 const showBookingModal = ref(false);
-const currentDate = ref(new Date(2026, 1, 17)); // Feb 17, 2026
+const currentDate = ref(new Date());
+const timeAxisDetails = ref(null);
+const gridScrollArea = ref(null);
 
 const formattedDateDisplay = computed(() => {
   return currentDate.value.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
+    weekday: "short",
+    month: "short",
     day: "numeric",
-    year: "numeric",
   });
 });
 
-const hours = Array.from({ length: 15 }, (_, i) => i + 8);
+const hours = Array.from({ length: 15 }, (_, i) => i + 8); // 08:00 to 22:00
 
 const courts = [
-  { id: 1, name: "Alpha Sector 01" },
-  { id: 2, name: "Alpha Sector 02" },
-  { id: 3, name: "Bravo Sector 03" },
-  { id: 4, name: "Badminton Hall 01" },
-  { id: 5, name: "Badminton Hall 02" },
+  { id: 1, name: "Alpha 01" },
+  { id: 2, name: "Alpha 02" },
+  { id: 3, name: "Bravo 03" },
+  { id: 4, name: "Badminton A" },
+  { id: 5, name: "Badminton B" },
 ];
 
 const bookings = ref([
   {
     id: 1082,
     courtId: 1,
-    user: "SOMSAY KHAMMONE",
+    user: "SOMSAY K.",
     status: "paid",
     startTime: "09:00",
     endTime: "10:00",
@@ -478,7 +437,7 @@ const bookings = ref([
   {
     id: 1083,
     courtId: 2,
-    user: "ANOUSONE SENEVONG",
+    user: "ANOUSONE S.",
     status: "pending",
     startTime: "10:30",
     endTime: "12:00",
@@ -489,7 +448,7 @@ const bookings = ref([
   {
     id: 1102,
     courtId: 3,
-    user: "MTN CORPORATE MATCH",
+    user: "MTN MATCH",
     status: "paid",
     startTime: "17:00",
     endTime: "19:00",
@@ -500,7 +459,7 @@ const bookings = ref([
   {
     id: 9999,
     courtId: 1,
-    user: "FIELD MAINTENANCE",
+    user: "MAINTENANCE",
     status: "closed",
     startTime: "13:00",
     endTime: "15:00",
@@ -522,6 +481,11 @@ const getBookings = (courtId, hour) => {
   return bookings.value.filter((b) => b.courtId === courtId && b.hour === hour);
 };
 
+const getIcon = (name) => {
+  if (name.includes("Badminton")) return "🏸";
+  return "⚽";
+};
+
 const handleSlotClick = (court, hour) => {
   newBooking.value.courtId = court.id;
   newBooking.value.startTime = `${hour.toString().padStart(2, "0")}:00`;
@@ -534,8 +498,10 @@ const navigateDate = (count) => {
   currentDate.value = newDate;
 };
 
-const resetToToday = () => {
-  currentDate.value = new Date(2026, 1, 17);
+const syncScroll = () => {
+  if (gridScrollArea.value && timeAxisDetails.value) {
+    timeAxisDetails.value.scrollTop = gridScrollArea.value.scrollTop;
+  }
 };
 
 const saveBooking = () => {
@@ -582,24 +548,7 @@ const saveBooking = () => {
   height: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-</style>
-
-<style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #cbd5e1;

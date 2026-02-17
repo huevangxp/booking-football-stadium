@@ -5,363 +5,362 @@
       <div
         v-for="stat in stats"
         :key="stat.label"
-        class="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+        class="bg-white rounded-[32px] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden"
       >
-        <div class="flex items-center justify-between mb-4">
-          <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-inner transition-transform group-hover:scale-110"
-            :class="stat.colorClass"
-          >
-            {{ stat.icon }}
+        <div
+          class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-slate-50 rounded-bl-[100px] z-0 opacity-50 transition-opacity group-hover:opacity-100"
+        ></div>
+
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-6">
+            <div
+              class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-sm ring-1 ring-inset ring-slate-900/5 transition-transform group-hover:scale-110 group-hover:rotate-6"
+              :class="stat.colorClass"
+            >
+              {{ stat.icon }}
+            </div>
+            <div class="flex flex-col items-end">
+              <span
+                class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"
+                >Trend</span
+              >
+              <span
+                class="text-xs font-bold text-green-500 flex items-center gap-1"
+              >
+                ↑ {{ stat.growth }}
+              </span>
+            </div>
           </div>
-          <span
-            class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"
-            >Total Status</span
-          >
+          <h4 class="text-4xl font-black text-slate-900 tracking-tighter mb-1">
+            {{ stat.value }}
+          </h4>
+          <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">
+            {{ stat.label }}
+          </p>
         </div>
-        <h4 class="text-3xl font-black text-slate-900 tracking-tighter">
-          {{ stat.value }}
-        </h4>
-        <p
-          class="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1"
-        >
-          {{ stat.label }}
-        </p>
       </div>
     </div>
 
     <div class="grid grid-cols-1 xl:grid-cols-12 gap-10 items-start">
       <!-- Customer Directory -->
       <div class="xl:col-span-8 space-y-6">
+        <!-- Header & Filters -->
         <div
-          class="bg-white rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden"
+          class="flex flex-col xl:flex-row justify-between items-center gap-6"
         >
-          <div
-            class="p-10 border-b border-slate-50 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 bg-gradient-to-r from-white to-slate-50/50"
-          >
-            <div>
-              <h3
-                class="text-3xl font-black text-slate-900 tracking-tighter uppercase"
-              >
-                Customer Hub
-              </h3>
-              <p
-                class="text-[10px] font-black text-primary uppercase tracking-[0.3em] mt-1"
-              >
-                Directory & Loyalty Management
-              </p>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-4 w-full xl:w-auto">
-              <div class="relative flex-1 xl:w-80 group">
-                <span
-                  class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors"
-                  >🔍</span
-                >
-                <input
-                  type="text"
-                  placeholder="ID, Name or Phone..."
-                  class="w-full h-14 pl-14 pr-6 bg-slate-100/50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:ring-4 focus:ring-primary/5 focus:bg-white focus:border-primary outline-none transition-all shadow-inner"
-                />
-              </div>
-              <button
-                class="w-14 h-14 flex items-center justify-center bg-white border border-slate-200 rounded-2xl text-slate-500 hover:text-primary hover:border-primary transition-all shadow-sm"
-              >
-                <span class="text-xl">Filter</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr
-                  class="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] border-b border-slate-50"
-                >
-                  <th class="px-10 py-6">Identity</th>
-                  <th class="px-10 py-6">Engagement</th>
-                  <th class="px-10 py-6">Club Status</th>
-                  <th class="px-10 py-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-50">
-                <tr
-                  v-for="user in users"
-                  :key="user.id"
-                  class="group hover:bg-slate-50/80 transition-all duration-300"
-                >
-                  <td class="px-10 py-8">
-                    <div class="flex items-center gap-5">
-                      <div class="relative">
-                        <div
-                          class="w-14 h-14 rounded-[20px] flex items-center justify-center font-black text-lg shadow-2xl transition-transform group-hover:scale-110"
-                          :style="{
-                            backgroundColor: user.color,
-                            color: user.vip ? '#1e3a8a' : '#64748b',
-                          }"
-                        >
-                          {{ user.name.charAt(0) }}
-                        </div>
-                        <div
-                          v-if="user.vip"
-                          class="absolute -top-1 -right-1 w-5 h-5 bg-amber-400 border-2 border-white rounded-full flex items-center justify-center shadow-lg"
-                        >
-                          <span class="text-[8px]">👑</span>
-                        </div>
-                      </div>
-                      <div>
-                        <p
-                          class="text-base font-black text-slate-900 leading-none mb-1.5 uppercase tracking-tight"
-                        >
-                          {{ user.name }}
-                        </p>
-                        <p
-                          class="text-[10px] font-bold text-slate-400 tracking-widest tabular-nums uppercase"
-                        >
-                          {{ user.phone }}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-10 py-8">
-                    <div class="space-y-1.5">
-                      <p class="text-sm font-black text-slate-700 tabular-nums">
-                        {{ user.totalBookings }}
-                        <span
-                          class="text-[10px] text-slate-400 uppercase tracking-widest ml-1"
-                          >Sessions</span
-                        >
-                      </p>
-                      <div
-                        v-if="user.noShows > 0"
-                        class="flex items-center gap-1.5 opacity-80"
-                      >
-                        <span
-                          class="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"
-                        ></span>
-                        <p
-                          class="text-[9px] font-black text-red-600 uppercase tracking-[0.15em]"
-                        >
-                          {{ user.noShows }} Incident Reports
-                        </p>
-                      </div>
-                      <div v-else class="flex items-center gap-1.5">
-                        <span
-                          class="w-1.5 h-1.5 bg-green-500 rounded-full"
-                        ></span>
-                        <p
-                          class="text-[9px] font-black text-green-600 uppercase tracking-[0.15em]"
-                        >
-                          Exemplary Record
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-10 py-8">
-                    <span
-                      class="inline-flex items-center px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all"
-                      :class="
-                        user.vip
-                          ? 'bg-primary text-white shadow-xl shadow-primary/30 ring-4 ring-primary/5'
-                          : 'bg-slate-100 text-slate-500 border border-slate-200'
-                      "
-                    >
-                      {{ user.vip ? "VIP Black Card" : "Standard Tier" }}
-                    </span>
-                  </td>
-                  <td class="px-10 py-8 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button
-                        class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm"
-                      >
-                        ✎
-                      </button>
-                      <button
-                        class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl hover:bg-slate-100 text-slate-400 transition-all shadow-sm"
-                      >
-                        ⋯
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div
-            class="p-8 bg-slate-50/50 border-t border-slate-50 flex items-center justify-between"
-          >
-            <p
-              class="text-[10px] font-black text-slate-400 uppercase tracking-widest"
+          <div>
+            <h3
+              class="text-3xl font-black text-slate-900 tracking-tighter uppercase"
             >
-              Showing 4 of 1,280 Members
+              Customer Hub
+            </h3>
+            <p
+              class="text-[10px] font-black text-primary uppercase tracking-[0.3em] mt-2"
+            >
+              Directory & Loyalty Management
             </p>
-            <div class="flex gap-2">
-              <button
-                class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary transition-all"
+          </div>
+
+          <div
+            class="flex items-center gap-3 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm"
+          >
+            <div class="relative group">
+              <span
+                class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors"
+                >🔍</span
               >
-                Previous
-              </button>
-              <button
-                class="px-4 py-2 bg-primary text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
-              >
-                Next Page
-              </button>
+              <input
+                type="text"
+                placeholder="Search..."
+                class="w-64 h-11 pl-10 pr-4 bg-transparent text-sm font-bold text-slate-900 placeholder:text-slate-400 outline-none"
+              />
+            </div>
+            <div class="h-6 w-px bg-slate-200"></div>
+            <button
+              class="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-slate-50 text-slate-500 transition-colors"
+            >
+              <span class="text-lg">⚡</span>
+            </button>
+            <button
+              class="px-5 h-11 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-colors shadow-lg"
+            >
+              Add New
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating Rows Table -->
+        <div class="space-y-4">
+          <!-- Table Header -->
+          <div
+            class="grid grid-cols-12 gap-4 px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]"
+          >
+            <div class="col-span-4">Identity</div>
+            <div class="col-span-4">Engagement</div>
+            <div class="col-span-3">Status</div>
+            <div class="col-span-1 text-right">Action</div>
+          </div>
+
+          <!-- Rows -->
+          <div
+            v-for="user in users"
+            :key="user.id"
+            class="group bg-white rounded-[24px] p-5 border border-slate-100 shadow-sm hover:shadow-xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+          >
+            <div
+              class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+            ></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <!-- Identity -->
+              <div class="md:col-span-4 flex items-center gap-5">
+                <span
+                  class="text-slate-200 font-black text-xl italic tabular-nums w-8"
+                  >#{{ user.id }}</span
+                >
+                <div class="relative">
+                  <div
+                    class="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-xl shadow-inner transition-transform group-hover:scale-105"
+                    :style="{
+                      backgroundColor: user.color,
+                      color: user.vip ? '#1e3a8a' : '#64748b',
+                    }"
+                  >
+                    {{ user.name.charAt(0) }}
+                  </div>
+                  <div
+                    v-if="user.vip"
+                    class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 border-2 border-white rounded-full flex items-center justify-center shadow-md animate-bounce-slow"
+                  >
+                    <span class="text-[10px]">👑</span>
+                  </div>
+                </div>
+                <div>
+                  <h4
+                    class="text-sm font-black text-slate-900 uppercase tracking-tight mb-1"
+                  >
+                    {{ user.name }}
+                  </h4>
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-slate-100 text-slate-500 border border-slate-200 tabular-nums"
+                      >{{ user.phone }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Engagement -->
+              <div class="md:col-span-4">
+                <div class="flex items-center gap-8">
+                  <div>
+                    <p
+                      class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1"
+                    >
+                      Bookings
+                    </p>
+                    <p class="text-lg font-black text-slate-900 tabular-nums">
+                      {{ user.totalBookings }}
+                    </p>
+                  </div>
+                  <div class="h-8 w-px bg-slate-100"></div>
+                  <div>
+                    <p
+                      class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1"
+                    >
+                      Reliability
+                    </p>
+                    <div
+                      v-if="user.noShows > 0"
+                      class="flex items-center gap-1.5 text-red-600"
+                    >
+                      <span
+                        class="w-2 h-2 rounded-full bg-red-500 animate-pulse"
+                      ></span>
+                      <span class="text-xs font-black uppercase tracking-tight"
+                        >Warning</span
+                      >
+                    </div>
+                    <div
+                      v-else
+                      class="flex items-center gap-1.5 text-green-600"
+                    >
+                      <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                      <span class="text-xs font-black uppercase tracking-tight"
+                        >Excellent</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div class="md:col-span-3">
+                <span
+                  class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+                  :class="
+                    user.vip
+                      ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20'
+                      : 'bg-white border border-slate-200 text-slate-500'
+                  "
+                >
+                  <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :class="user.vip ? 'bg-yellow-400' : 'bg-slate-300'"
+                  ></span>
+                  {{ user.vip ? "VIP Member" : "Standard" }}
+                </span>
+              </div>
+
+              <!-- Actions -->
+              <div class="md:col-span-1 text-right">
+                <button
+                  class="w-10 h-10 rounded-xl bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-slate-200 flex items-center justify-center transition-all text-slate-400 hover:text-primary"
+                >
+                  ⋯
+                </button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Pagination -->
+        <div class="flex items-center justify-center gap-4 pt-4">
+          <button
+            class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all"
+          >
+            ←
+          </button>
+          <span
+            class="text-[10px] font-black text-slate-900 uppercase tracking-widest"
+            >Page 1 of 12</span
+          >
+          <button
+            class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-all"
+          >
+            →
+          </button>
+        </div>
       </div>
 
-      <!-- Matchmaking Monitor -->
+      <!-- Matchmaking Monitor Sidebar -->
       <div class="xl:col-span-4 space-y-8">
         <div
-          class="bg-slate-900 rounded-[40px] p-10 shadow-2xl shadow-slate-900/40 relative overflow-hidden"
+          class="bg-slate-900 rounded-[40px] p-8 shadow-2xl shadow-slate-900/40 relative overflow-hidden"
         >
+          <!-- Ambient Background -->
           <div
-            class="absolute -top-24 -right-24 w-64 h-64 bg-primary/20 rounded-full blur-3xl"
+            class="absolute -top-32 -right-32 w-80 h-80 bg-blue-600/20 rounded-full blur-[80px]"
+          ></div>
+          <div
+            class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-900 to-transparent z-10"
           ></div>
 
-          <div class="relative z-10">
+          <div class="relative z-20">
             <div class="flex items-center justify-between mb-8">
               <div>
                 <h3
                   class="text-2xl font-black text-white tracking-tighter uppercase"
                 >
-                  Match Flux
+                  Live Matches
                 </h3>
                 <p
-                  class="text-[10px] font-black text-primary-light uppercase tracking-[0.3em] mt-1"
+                  class="text-[9px] font-bold text-slate-500 uppercase tracking-[0.3em] mt-1 pl-0.5"
                 >
-                  Live Venue Tracker
+                  Real-time Formation
                 </p>
               </div>
-              <div class="flex flex-col items-end">
-                <span
-                  class="px-3 py-1 bg-amber-500 text-white text-[9px] font-black rounded-full uppercase tracking-widest animate-pulse shadow-lg shadow-amber-500/30"
-                >
-                  {{ matches.length }} Pending
-                </span>
-                <span
-                  class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2"
-                  >v2.4 Live</span
-                >
+              <div
+                class="flex flex-col items-center justify-center w-12 h-12 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md"
+              >
+                <span class="text-lg animate-pulse">📡</span>
               </div>
             </div>
 
-            <div class="space-y-6">
+            <div class="space-y-4">
               <div
                 v-for="match in matches"
                 :key="match.id"
-                class="bg-white/5 border border-white/10 rounded-3xl p-6 hover:bg-white/[0.08] hover:border-white/20 transition-all duration-500 group"
+                class="bg-white/5 border border-white/5 rounded-3xl p-5 hover:bg-white/10 transition-all cursor-pointer group hover:border-primary/50"
               >
-                <div class="flex gap-5">
-                  <div
-                    class="flex flex-col items-center justify-center bg-white/10 w-16 h-16 rounded-2xl group-hover:bg-primary-light/20 transition-all border border-white/5"
+                <div class="flex justify-between items-start mb-4">
+                  <span
+                    class="px-2 py-1 rounded bg-white/10 text-[8px] font-black text-white uppercase tracking-widest border border-white/5"
+                    >{{ match.court }}</span
                   >
-                    <span
-                      class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]"
-                      >{{ match.date }}</span
-                    >
-                    <span
-                      class="text-sm font-black text-white leading-tight tabular-nums"
-                      >{{ match.time }}</span
-                    >
-                  </div>
-
-                  <div class="flex-1 space-y-3">
-                    <div>
-                      <h4
-                        class="text-sm font-black text-white uppercase tracking-tight group-hover:text-primary-light transition-colors"
-                      >
-                        {{ match.court }} — {{ match.type }}
-                      </h4>
-                      <div class="flex items-center gap-2 mt-1">
-                        <div
-                          class="w-4 h-4 rounded-full bg-slate-700 flex items-center justify-center text-[8px]"
-                        >
-                          👤
-                        </div>
-                        <p
-                          class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
-                        >
-                          Host:
-                          <span class="text-white">{{ match.creator }}</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div class="space-y-2">
-                      <div
-                        class="flex justify-between items-center text-[9px] font-black uppercase tracking-[0.2em]"
-                      >
-                        <span class="text-primary-light"
-                          >{{ match.joined }} Established</span
-                        >
-                        <span class="text-slate-500"
-                          >{{ match.needed - match.joined }} Vacant</span
-                        >
-                      </div>
-                      <div
-                        class="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner"
-                      >
-                        <div
-                          class="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full transition-all duration-1000 shadow-[0_0_12px_rgba(30,58,138,0.5)]"
-                          :style="{
-                            width: (match.joined / match.needed) * 100 + '%',
-                          }"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                  <span
+                    class="text-[10px] font-bold text-primary-light uppercase tracking-wider"
+                    >{{ match.time }}</span
+                  >
                 </div>
 
-                <div class="mt-6 flex gap-3">
-                  <button
-                    class="flex-1 h-11 bg-white/[0.08] border border-white/5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/20 transition-all"
+                <h4 class="text-lg font-black text-white leading-tight mb-1">
+                  {{ match.type }}
+                </h4>
+                <p class="text-xs font-medium text-slate-400 mb-4">
+                  Hosted by {{ match.creator }}
+                </p>
+
+                <div class="space-y-2">
+                  <div
+                    class="flex justify-between text-[9px] font-bold uppercase tracking-widest text-slate-500"
                   >
-                    Broadcast
-                  </button>
-                  <button
-                    class="w-11 h-11 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-slate-900 shadow-xl hover:scale-110 active:scale-90 transition-all"
-                  >
-                    ✓
-                  </button>
+                    <span>Capacity</span>
+                    <span class="text-white"
+                      >{{ match.joined }}/{{ match.needed }}</span
+                    >
+                  </div>
+                  <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000"
+                      :style="{
+                        width: (match.joined / match.needed) * 100 + '%',
+                      }"
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <button
-              class="w-full mt-10 py-5 bg-white/5 border border-dashed border-white/20 rounded-3xl text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-white hover:border-white/40 hover:bg-white/10 transition-all"
+              class="w-full mt-6 py-4 bg-primary hover:bg-primary-light text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.25em] transition-all shadow-lg shadow-primary/20 hover:shadow-primary/40"
             >
-              Initialize New Match Thread
+              + Create Match
             </button>
           </div>
         </div>
 
-        <!-- Venue Insights Mini-Card -->
+        <!-- System Status -->
         <div
-          class="bg-gradient-to-br from-indigo-600 to-primary rounded-[40px] p-8 text-white shadow-2xl shadow-primary/30 group"
+          class="bg-white rounded-[32px] p-8 border border-slate-100 shadow-xl shadow-slate-200/50"
         >
-          <div class="flex justify-between items-start mb-6">
-            <div
-              class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-xl group-hover:rotate-12 transition-transform"
-            >
-              💡
-            </div>
-            <span
-              class="text-[9px] font-black uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full"
-              >Pro Tip</span
-            >
-          </div>
-          <h5 class="text-xl font-black tracking-tight mb-2">
-            Boost Engagement
-          </h5>
-          <p
-            class="text-xs font-medium text-white/70 leading-relaxed uppercase tracking-widest"
+          <h4
+            class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6"
           >
-            VIP members are 4x more likely to accept matchmaking invites during
-            peak weekend hours.
-          </p>
+            System Health
+          </h4>
+          <div class="space-y-5">
+            <div
+              v-for="item in ['Server Latency', 'Database', 'API Gateway']"
+              :key="item"
+              class="flex items-center justify-between"
+            >
+              <span class="text-xs font-bold text-slate-500">{{ item }}</span>
+              <div class="flex items-center gap-2">
+                <div class="flex gap-0.5">
+                  <span class="w-1 h-3 rounded-full bg-emerald-500"></span>
+                  <span class="w-1 h-3 rounded-full bg-emerald-500"></span>
+                  <span
+                    class="w-1 h-3 rounded-full bg-emerald-500 opacity-30"
+                  ></span>
+                </div>
+                <span
+                  class="text-[10px] font-black text-emerald-600 uppercase tracking-wider"
+                  >Good</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -379,24 +378,28 @@ const stats = [
     value: "1,284",
     icon: "👥",
     colorClass: "bg-blue-50 text-blue-600",
+    growth: "12%",
   },
   {
     label: "VIP Loyalists",
     value: "342",
     icon: "👑",
     colorClass: "bg-amber-50 text-amber-600",
+    growth: "5%",
   },
   {
     label: "Success Rate",
     value: "98.2%",
     icon: "📈",
-    colorClass: "bg-green-50 text-green-600",
+    colorClass: "bg-emerald-50 text-emerald-600",
+    growth: "0.4%",
   },
   {
     label: "New This Month",
     value: "+124",
     icon: "✨",
     colorClass: "bg-purple-50 text-purple-600",
+    growth: "18%",
   },
 ];
 
@@ -404,7 +407,7 @@ const users = [
   {
     id: 1,
     name: "SOMSAK KEO-VICHIT",
-    phone: "020 55XX XXXX",
+    phone: "020 5519 8822",
     totalBookings: 24,
     noShows: 0,
     vip: true,
@@ -413,7 +416,7 @@ const users = [
   {
     id: 2,
     name: "ANOUSONE SENEVONG",
-    phone: "020 99XX XXXX",
+    phone: "020 9982 1102",
     totalBookings: 12,
     noShows: 1,
     vip: false,
@@ -422,7 +425,7 @@ const users = [
   {
     id: 3,
     name: "VANH LAVANH DARA",
-    phone: "020 77XX XXXX",
+    phone: "020 7712 5599",
     totalBookings: 8,
     noShows: 0,
     vip: false,
@@ -431,7 +434,7 @@ const users = [
   {
     id: 4,
     name: "KEO PHOMMACHANH",
-    phone: "020 22XX XXXX",
+    phone: "020 2200 1199",
     totalBookings: 45,
     noShows: 0,
     vip: true,
@@ -442,7 +445,7 @@ const users = [
 const matches = [
   {
     id: 1,
-    court: "ALPHA SECTOR 01",
+    court: "ALPHA 01",
     type: "Friendly 5v5",
     date: "TODAY",
     time: "19:00",
@@ -452,7 +455,7 @@ const matches = [
   },
   {
     id: 2,
-    court: "BRAVO SECTOR 03",
+    court: "BRAVO 03",
     type: "Competitive 7v7",
     date: "TOMORROW",
     time: "18:00",
@@ -474,17 +477,16 @@ const matches = [
 </script>
 
 <style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-  height: 6px;
+.animate-bounce-slow {
+  animation: bounce 3s infinite;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #cbd5e1;
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 </style>

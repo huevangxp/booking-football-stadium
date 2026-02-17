@@ -31,7 +31,7 @@
 
         <div class="flex gap-4 pt-4">
           <NuxtLink
-            to="/login"
+            :to="isAuthenticated ? '/booking' : '/login'"
             class="btn btn-primary h-14 px-10 text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 rounded-2xl"
           >
             <span>⚡</span> Start Booking

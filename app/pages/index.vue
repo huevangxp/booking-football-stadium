@@ -234,6 +234,8 @@ definePageMeta({
   layout: "landing",
 });
 
+const { isAuthenticated } = useAuth();
+
 const featuredProducts = [
   {
     id: 1,

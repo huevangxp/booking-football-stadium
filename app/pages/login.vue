@@ -199,10 +199,14 @@ const loginForm = ref({
   password: "",
 });
 
+const { login } = useAuth();
+
 const handleLogin = () => {
   if (loginForm.value.username === "admin") {
+    login("admin");
     navigateTo("/admin/dashboard");
   } else if (loginForm.value.username === "customer") {
+    login("customer");
     navigateTo("/customer");
   } else {
     alert('Please enter "admin" or "customer" to test the roles.');

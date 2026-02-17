@@ -148,7 +148,7 @@
 
 <script setup>
 definePageMeta({
-  layout: "customer",
+  layout: "landing",
 });
 
 const activeTab = ref("Upcoming");

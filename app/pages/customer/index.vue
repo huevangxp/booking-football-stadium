@@ -239,7 +239,9 @@
 </template>
 
 <script setup>
+definePageMeta({
   layout: "landing",
+});
 
 const venues = [
   {

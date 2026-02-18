@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="px-6 py-12 max-w-7xl mx-auto space-y-20">
     <!-- Hero Section -->
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

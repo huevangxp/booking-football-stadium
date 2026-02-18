@@ -165,6 +165,38 @@
             </div>
           </div>
 
+          <!-- Language Switcher -->
+          <div class="relative group/lang">
+            <button
+              class="h-12 px-4 bg-white border border-slate-200 rounded-2xl flex items-center gap-2 hover:bg-slate-50 transition-all"
+            >
+              <span class="text-base">{{ langFlag || "🇬🇧" }}</span>
+              <span
+                class="text-[10px] font-black text-slate-600 uppercase tracking-widest"
+                >{{ langName || "English" }}</span
+              >
+              <span class="text-[8px] text-slate-400">▼</span>
+            </button>
+            <div
+              class="absolute right-0 top-full mt-2 w-44 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 opacity-0 invisible group-hover/lang:opacity-100 group-hover/lang:visible transition-all transform translate-y-2 group-hover/lang:translate-y-0 z-50"
+            >
+              <button
+                v-for="item in locales"
+                :key="item.code"
+                @click="setLanguage(item)"
+                class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors uppercase tracking-widest"
+                :class="
+                  locale === item.code
+                    ? 'bg-primary/5 text-primary font-black'
+                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+                "
+              >
+                <span class="text-base">{{ item.flag }}</span>
+                <span>{{ item.name }}</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Notifications -->
           <button
             class="w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center relative hover:bg-slate-50 transition-all group"
@@ -224,6 +256,22 @@ import LogoutConfirmationModal from "~/components/common/LogoutConfirmationModal
 
 const isCollapsed = ref(false);
 const showLogoutModal = ref(false);
+const { locales, setLocale, locale } = useI18n();
+const langName = useCookie("lang_name");
+const langFlag = useCookie("lang_flag");
+
+const setLanguage = (data) => {
+  setLocale(data.code);
+  langName.value = data.name;
+  langFlag.value = data.flag;
+};
+
+onMounted(() => {
+  if (!langName.value) {
+    langName.value = "English";
+    langFlag.value = "🇬🇧";
+  }
+});
 const route = useRoute();
 
 const currentDate = new Date().toLocaleDateString("en-US", {

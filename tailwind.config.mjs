@@ -17,6 +17,9 @@ export default {
         },
         sidebar: "#0f172a",
       },
+      fontFamily: {
+        sans: ['"Noto Sans Lao"', "ui-sans-serif", "system-ui", "sans-serif"],
+      },
     },
   },
   plugins: [],

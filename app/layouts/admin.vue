@@ -25,7 +25,7 @@
             >
             <span
               class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.25em]"
-              >Admin Console</span
+              >{{ $t("admin.console") }}</span
             >
           </div>
         </div>
@@ -105,7 +105,7 @@
             <p
               class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"
             >
-              Super Admin
+              {{ $t("admin.super_admin") }}
             </p>
           </div>
 
@@ -117,7 +117,7 @@
             <span
               class="text-white font-black text-[10px] uppercase tracking-widest flex items-center gap-2"
             >
-              <span>🚪</span> Sign Out
+              <span>🚪</span> {{ $t("sign_out") }}
             </span>
           </div>
         </div>
@@ -142,7 +142,7 @@
           <p
             class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1"
           >
-            {{ currentDate }} • Administration
+            {{ currentDate }} • {{ $t("admin.administration") }}
           </p>
         </div>
 
@@ -155,13 +155,13 @@
             >
             <input
               type="text"
-              placeholder="Search system..."
+              :placeholder="$t('admin.search_placeholder')"
               class="w-80 h-12 bg-white border border-slate-200 rounded-2xl pl-12 pr-4 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm"
             />
             <div
               class="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-100 rounded-lg text-[10px] font-bold text-slate-400 border border-slate-200"
             >
-              ⌘K
+              {{ $t("admin.cmd_k") }}
             </div>
           </div>
 
@@ -230,13 +230,13 @@
             <p
               class="text-[9px] font-bold text-slate-400 uppercase tracking-widest"
             >
-              System Operational
+              {{ $t("admin.system_operational") }}
             </p>
           </div>
           <p
             class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
           >
-            © 2026 Admin Console v2.0
+            {{ $t("admin.copyright") }}
           </p>
         </div>
       </div>
@@ -256,7 +256,8 @@ import LogoutConfirmationModal from "~/components/common/LogoutConfirmationModal
 
 const isCollapsed = ref(false);
 const showLogoutModal = ref(false);
-const { locales, setLocale, locale } = useI18n();
+const { isAuthenticated, user, logout } = useAuth();
+const { locales, setLocale, locale, t } = useI18n();
 const langName = useCookie("lang_name");
 const langFlag = useCookie("lang_flag");
 
@@ -267,9 +268,24 @@ const setLanguage = (data) => {
 };
 
 onMounted(() => {
-  if (!langName.value) {
-    langName.value = "English";
-    langFlag.value = "🇬🇧";
+  if (!langName.value || !langFlag.value) {
+    const currentLocale = locales.value.find((l) => l.code === locale.value);
+    if (currentLocale) {
+      langName.value = currentLocale.name;
+      langFlag.value = currentLocale.flag;
+    } else {
+      langName.value = "English";
+      langFlag.value = "🇬🇧";
+    }
+  }
+});
+
+// Watch locale changes to keep cookie synced if changed externally (e.g. by URL)
+watch(locale, (newLocale) => {
+  const currentLocale = locales.value.find((l) => l.code === newLocale);
+  if (currentLocale) {
+    langName.value = currentLocale.name;
+    langFlag.value = currentLocale.flag;
   }
 });
 const route = useRoute();
@@ -280,33 +296,34 @@ const currentDate = new Date().toLocaleDateString("en-US", {
   day: "numeric",
 });
 
-const menuGroups = [
+const menuGroups = computed(() => [
   {
-    title: "Overview",
+    title: t("admin.overview"),
     items: [
-      { name: "Dashboard", path: "/admin/dashboard", icon: "📊" },
-      { name: "Reports", path: "/admin/reports", icon: "📈" },
+      { name: t("admin.dashboard"), path: "/admin/dashboard", icon: "📊" },
+      { name: t("admin.reports"), path: "/admin/reports", icon: "📈" },
     ],
   },
   {
-    title: "Management",
+    title: t("admin.management"),
     items: [
-      { name: "Calendar", path: "/admin/calendar", icon: "📅" },
-      { name: "Payments", path: "/admin/payments", icon: "💳" },
-      { name: "Members", path: "/admin/members", icon: "👥" },
+      { name: t("admin.calendar"), path: "/admin/calendar", icon: "📅" },
+      { name: t("admin.payments"), path: "/admin/payments", icon: "💳" },
+      { name: t("admin.members"), path: "/admin/members", icon: "👥" },
+      { name: t("admin.messages"), path: "/admin/messages", icon: "💬" },
     ],
   },
   {
-    title: "System",
+    title: t("admin.system"),
     items: [
-      { name: "Venues", path: "/admin/venues", icon: "🏟️" },
-      { name: "Settings", path: "/admin/settings", icon: "⚙️" },
+      { name: t("admin.venues"), path: "/admin/venues", icon: "🏟️" },
+      { name: t("admin.settings"), path: "/admin/settings", icon: "⚙️" },
     ],
   },
-];
+]);
 
 const currentPageTitle = computed(() => {
-  for (const group of menuGroups) {
+  for (const group of menuGroups.value) {
     const found = group.items.find((item) => route.path.startsWith(item.path));
     if (found) return found.name;
   }
@@ -319,11 +336,15 @@ const requestLogout = () => {
 
 const executeLogout = () => {
   showLogoutModal.value = false;
-  navigateTo("/login");
+  logout();
+  navigateTo("/");
 };
 </script>
 
-<style scoped>
+<style>
+body {
+  font-family: "Noto Sans Lao", sans-serif;
+}
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }

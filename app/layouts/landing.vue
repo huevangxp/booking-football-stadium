@@ -57,6 +57,13 @@
             <span>🎟️</span>
             <span>{{ $t("my_bookings") }}</span>
           </NuxtLink>
+          <button
+            @click="toggleChat"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-widest transition-all hover:bg-slate-50 hover:text-primary"
+          >
+            <span>💬</span>
+            <span>Chat</span>
+          </button>
         </div>
 
         <!-- Desktop Right Actions -->
@@ -208,6 +215,15 @@
               >
                 <span>🎟️</span> {{ $t("my_bookings") }}
               </NuxtLink>
+              <button
+                @click="
+                  isMobileMenuOpen = false;
+                  toggleChat();
+                "
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 transition-colors"
+              >
+                <span>💬</span> Chat
+              </button>
             </div>
 
             <!-- Profile / Auth (Mobile) -->
@@ -458,6 +474,7 @@
       </div>
     </footer>
 
+    <CustomerChat />
     <!-- Logout Confirmation Modal -->
     <LogoutConfirmationModal
       :is-open="showLogoutModal"
@@ -469,8 +486,10 @@
 
 <script setup>
 import LogoutConfirmationModal from "~/components/common/LogoutConfirmationModal.vue";
+import CustomerChat from "~/components/common/CustomerChat.vue";
 
 const { isAuthenticated, user, logout } = useAuth();
+const { toggleChat } = useChat();
 const { locales, setLocale, locale } = useI18n();
 const langName = useCookie("lang_name");
 const langFlag = useCookie("lang_flag");
@@ -484,9 +503,24 @@ const setLanguage = (data) => {
 };
 
 onMounted(() => {
-  if (!langName.value) {
-    langName.value = "English";
-    langFlag.value = "🇬🇧";
+  if (!langName.value || !langFlag.value) {
+    const currentLocale = locales.value.find((l) => l.code === locale.value);
+    if (currentLocale) {
+      langName.value = currentLocale.name;
+      langFlag.value = currentLocale.flag;
+    } else {
+      langName.value = "English";
+      langFlag.value = "🇬🇧";
+    }
+  }
+});
+
+// Watch locale changes to keep cookie synced if changed externally
+watch(locale, (newLocale) => {
+  const currentLocale = locales.value.find((l) => l.code === newLocale);
+  if (currentLocale) {
+    langName.value = currentLocale.name;
+    langFlag.value = currentLocale.flag;
   }
 });
 

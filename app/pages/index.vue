@@ -10,27 +10,26 @@
         <div class="flex items-center gap-2">
           <span
             class="px-2.5 sm:px-3 py-1 bg-primary/10 text-primary rounded-full text-[9px] sm:text-[10px] uppercase font-black tracking-widest animate-pulse"
-            >Now Active</span
+            >{{ $t('hero.active_now') }}</span
           >
           <span
             class="text-[10px] sm:text-sm font-bold text-slate-400 uppercase tracking-widest"
-            >Season 2026</span
+            >{{ $t('hero.season') }}</span
           >
         </div>
         <h1
           class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 leading-tight tracking-tighter shadow-sm"
         >
-          Where
+          {{ $t('hero.title_part1') }}
           <span
             class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600"
-            >Legends</span
-          ><br />Are Born.
+            >{{ $t('hero.title_part2') }}</span
+          ><br />{{ $t('hero.title_part3') }}
         </h1>
         <p
           class="text-sm sm:text-lg text-slate-500 font-medium leading-relaxed max-w-lg"
         >
-          The city's premier sports complex. Book your next match effortlessly,
-          join tournaments, and elevate your game.
+          {{ $t('hero.description') }}
         </p>
 
         <div class="flex flex-wrap gap-3 sm:gap-4 pt-2 sm:pt-4">
@@ -38,12 +37,12 @@
             :to="isAuthenticated ? '/booking' : '/login'"
             class="btn btn-primary h-12 sm:h-14 px-6 sm:px-10 text-[10px] sm:text-xs font-black uppercase tracking-widest shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 rounded-xl sm:rounded-2xl"
           >
-            <span>⚡</span> Start Booking
+            <span>⚡</span> {{ $t('hero.start_booking') }}
           </NuxtLink>
           <button
             class="h-12 sm:h-14 px-6 sm:px-8 text-[10px] sm:text-xs font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl sm:rounded-2xl transition-all border border-transparent hover:border-slate-200"
           >
-            Virtual Tour
+            {{ $t('hero.virtual_tour') }}
           </button>
         </div>
       </div>
@@ -66,7 +65,7 @@
         >
           <div class="text-white">
             <h3 class="text-2xl sm:text-4xl font-black tracking-tighter mb-1">
-              Main Arena
+              {{ $t('hero.main_arena') }}
             </h3>
             <div class="flex items-center gap-2 sm:gap-3">
               <span
@@ -75,7 +74,7 @@
               <p
                 class="text-[10px] sm:text-xs font-bold uppercase tracking-widest"
               >
-                8 Slots Available Today
+                {{ $t('hero.slots_available') }}
               </p>
             </div>
           </div>
@@ -108,18 +107,18 @@
           <h2
             class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tighter uppercase"
           >
-            Your Schedule
+            {{ $t('dashboard.your_schedule') }}
           </h2>
           <p
             class="text-xs sm:text-sm font-bold text-slate-400 uppercase tracking-widest mt-1"
           >
-            Don't miss your upcoming games
+            {{ $t('dashboard.schedule_subtitle') }}
           </p>
         </div>
         <NuxtLink
           to="/customer/my-bookings"
           class="text-primary font-black uppercase tracking-widest text-[10px] sm:text-xs hover:underline underline-offset-4"
-          >View All</NuxtLink
+          >{{ $t('dashboard.view_all') }}</NuxtLink
         >
       </div>
 
@@ -131,7 +130,7 @@
           <div class="absolute top-0 right-0 p-4">
             <span
               class="px-2.5 py-1 bg-green-100 text-green-700 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-full"
-              >Confirmed</span
+              >{{ $t('dashboard.confirmed') }}</span
             >
           </div>
           <p
@@ -142,7 +141,7 @@
           <h3
             class="text-xl sm:text-2xl font-black text-slate-900 leading-tight mb-2 group-hover:text-primary transition-colors"
           >
-            Friendly Match
+            {{ $t('dashboard.friendly_match') }}
           </h3>
           <p
             class="text-xs sm:text-sm font-bold text-slate-500 flex items-center gap-2"
@@ -167,7 +166,7 @@
             <button
               class="text-primary font-black uppercase tracking-widest text-[9px] sm:text-[10px] hover:text-primary-dark"
             >
-              Manage
+              {{ $t('dashboard.manage') }}
             </button>
           </div>
         </div>
@@ -184,17 +183,17 @@
           <h3
             class="text-base sm:text-lg font-black text-slate-900 uppercase tracking-tight mb-2"
           >
-            Plan Ahead
+            {{ $t('dashboard.plan_ahead') }}
           </h3>
           <p
             class="text-[10px] sm:text-xs font-bold text-slate-400 max-w-[200px] mb-5 sm:mb-6"
           >
-            Secure your favorite slot for next week.
+            {{ $t('dashboard.plan_subtitle') }}
           </p>
           <NuxtLink
             to="/booking"
             class="px-5 sm:px-6 py-2 bg-white border border-slate-200 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest hover:border-primary hover:text-primary transition-all shadow-sm"
-            >Book Slot</NuxtLink
+            >{{ $t('dashboard.book_slot') }}</NuxtLink
           >
         </div>
 
@@ -210,14 +209,14 @@
           <p
             class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-bold opacity-70 mb-6 sm:mb-8"
           >
-            Matches Played
+            {{ $t('dashboard.matches_played') }}
           </p>
 
-          <h3 class="text-lg sm:text-xl font-black mb-1">MVP</h3>
+          <h3 class="text-lg sm:text-xl font-black mb-1">{{ $t('dashboard.mvp') }}</h3>
           <p
             class="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-bold opacity-70"
           >
-            Player Rank
+            {{ $t('dashboard.player_rank') }}
           </p>
 
           <div
@@ -237,14 +236,12 @@
         <h2
           class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase mb-3 sm:mb-4"
         >
-          Our Premium Venues
+          {{ $t('landing_venues.premium_title') }}
         </h2>
         <p
           class="text-sm sm:text-base text-slate-500 font-medium leading-relaxed"
         >
-          Experience professional-grade facilities designed for peak
-          performance. Whether it's football or badminton, we have the perfect
-          ground for you.
+          {{ $t('landing_venues.premium_desc') }}
         </p>
       </div>
 
@@ -321,7 +318,7 @@
             <button
               class="w-full mt-6 sm:mt-8 py-3.5 sm:py-4 bg-slate-900 text-white rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] hover:bg-primary transition-all shadow-lg shadow-slate-900/10 group-hover:shadow-primary/30"
             >
-              View Availability
+              {{ $t('landing_venues.availability') }}
             </button>
           </div>
         </div>
@@ -336,12 +333,12 @@
         <h2
           class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tighter uppercase"
         >
-          Why Choose Us
+          {{ $t('features.why_choose_us') }}
         </h2>
         <p
           class="text-xs sm:text-sm font-bold text-slate-400 uppercase tracking-widest"
         >
-          Designed for professionals, open to everyone.
+          {{ $t('features.why_choose_subtitle') }}
         </p>
       </div>
 
